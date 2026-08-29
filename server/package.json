@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "echo Build step handled by railway",
-    "start": "node node_modules/tsx/dist/cli.mjs src/prod.ts",
+    "build": "npx prisma generate",
+    "start": "npx tsx src/prod.ts",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:push": "prisma db push",
