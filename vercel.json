@@ -1,8 +1,12 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "vite build",
   "outputDirectory": "dist",
   "framework": "vite",
+  "installCommand": "npm install",
   "rewrites": [
-    { "source": "/((?!api|_next|assets|favicon.ico).*)", "destination": "/index.html" }
+    {
+      "source": "/((?!api|_next|assets|favicon.ico).*)",
+      "destination": "/index.html"
+    }
   ]
 }
