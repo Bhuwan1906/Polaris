@@ -27,6 +27,7 @@ import AdminResourcesPage from '@/pages/admin/AdminResourcesPage';
 import AdminMediaPage from '@/pages/admin/AdminMediaPage';
 import AdminUsersPage from '@/pages/admin/AdminUsersPage';
 import CreditsPage from '@/pages/CreditsPage';
+import NotFoundPage from '@/pages/NotFoundPage';
 import AdminOutreachPage from '@/pages/admin/AdminOutreachPage';
 
 function ProtectedRoute({ children, adminOnly = false }: { children: React.ReactNode; adminOnly?: boolean }) {
@@ -141,18 +142,7 @@ export default function App() {
           <Route path="/credits" element={<CreditsPage />} />
 
           {/* 404 */}
-          <Route
-            path="*"
-            element={
-              <div className="flex h-[60vh] flex-col items-center justify-center text-center">
-                <h1 className="text-6xl font-bold text-polar-500">404</h1>
-                <p className="mt-4 text-xl text-surface-400">Page not found</p>
-                <a href="/" className="btn-primary mt-6">
-                  Return Home
-                </a>
-              </div>
-            }
-          />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
       <Footer />
