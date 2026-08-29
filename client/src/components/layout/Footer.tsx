@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Mail, ExternalLink } from 'lucide-react';
+import PolarLogo from '@/components/ui/PolarLogo';
 
 const footerLinks = {
   'Explore': [
@@ -29,10 +30,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-aurora-gradient">
-                <span className="text-lg font-black text-polar-900">P</span>
-              </div>
-              <span className="text-xl font-bold text-white">POLARIS</span>
+              <PolarLogo size="md" showText showSubtitle />
             </div>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-surface-400">
               One digital gateway to India's polar knowledge. Bringing together expeditions,

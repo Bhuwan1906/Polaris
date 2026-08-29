@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Search, Menu, X, ChevronDown, User, LogOut, Shield, BookOpen } from 'lucide-react';
+import PolarLogo from '@/components/ui/PolarLogo';
 import { useAuth } from '@/context/AuthContext';
 import { cn } from '@/lib/utils';
 
@@ -35,33 +36,7 @@ export default function Navbar() {
       <div className="container-wide">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-aurora-gradient">
-              <span className="text-lg font-black text-polar-900">P</span>
-            </div>
-            <div className="hidden sm:block">
-              <span className="text-lg font-bold tracking-tight text-white">POLARIS</span>
-              <span className="ml-2 hidden text-xs text-surface-400 lg:inline">Polar Research & Information System</span>
-            </div>
-          </Link>
-
-          {/* Desktop Nav Links */}
-          <div className="hidden items-center gap-1 lg:flex">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                to={link.href}
-                className={cn(
-                  'rounded-lg px-3 py-2 text-sm font-medium transition-colors',
-                  location.pathname === link.href
-                    ? 'bg-surface-800 text-white'
-                    : 'text-surface-400 hover:bg-surface-800/50 hover:text-white'
-                )}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
+          <PolarLogo size="md" showText showSubtitle />
 
           {/* Right side: Search + Auth */}
           <div className="flex items-center gap-3">
