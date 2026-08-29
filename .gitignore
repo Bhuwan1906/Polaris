@@ -1,0 +1,29 @@
+node_modules/
+dist/
+uploads/
+.env
+.env.local
+*.log
+.DS_Store
+desktop.ini
+
+# Prisma
+server/prisma/migrations/
+server/prisma/dev.db
+server/prisma/dev.db-journal
+
+# Client build
+client/dist/
+
+# Server build
+server/dist/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+.freebuff/*.log
+.freebuff/*.log.err

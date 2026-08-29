@@ -1,0 +1,1 @@
+const fs = require("fs"); const data = JSON.parse(fs.readFileSync(process.argv[1], "utf8")); fs.writeFileSync(process.argv[2], data.content, "utf8"); console.log("Written " + data.content.length + " bytes to " + process.argv[2]);

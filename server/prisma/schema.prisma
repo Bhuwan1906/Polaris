@@ -1,0 +1,284 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ---- User & Auth ----
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("PUBLIC")
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  outreachContent OutreachContent[] @relation("OutreachCreator")
+}
+
+// ---- Expedition ----
+
+model Expedition {
+  id              String   @id @default(uuid())
+  name            String
+  expeditionNumber Int
+  region          String
+  startDate       DateTime
+  endDate         DateTime?
+  description     String
+  highlights      String?
+  status          String   @default("COMPLETED")
+  coverImage      String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  locations    LocationExpedition[]
+  reports      Report[]
+  publications Publication[]
+  datasets     Dataset[]
+  media        Media[]
+  activities   InstitutionalActivity[]
+  education    EducationalResource[]
+}
+
+// ---- Location ----
+
+model Location {
+  id          String   @id @default(uuid())
+  name        String
+  region      String
+  latitude    Float
+  longitude   Float
+  type        String
+  description String?
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+
+  expeditions LocationExpedition[]
+  media       Media[]
+}
+
+model LocationExpedition {
+  id           String     @id @default(uuid())
+  locationId   String
+  expeditionId String
+
+  location   Location   @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  expedition Expedition @relation(fields: [expeditionId], references: [id], onDelete: Cascade)
+
+  @@unique([locationId, expeditionId])
+}
+
+// ---- Report ----
+
+model Report {
+  id           String   @id @default(uuid())
+  title        String
+  type         String
+  content      String?
+  fileUrl      String?
+  year         Int
+  expeditionId String
+  status       String   @default("DRAFT")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  expedition Expedition @relation(fields: [expeditionId], references: [id], onDelete: Cascade)
+  tags       ReportTag[]
+}
+
+// ---- Publication ----
+
+model Publication {
+  id           String   @id @default(uuid())
+  title        String
+  authors      String
+  journal      String?
+  year         Int
+  doi          String?
+  abstract     String?
+  fileUrl      String?
+  expeditionId String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  expedition Expedition    @relation(fields: [expeditionId], references: [id], onDelete: Cascade)
+  tags       PublicationTag[]
+}
+
+// ---- Dataset ----
+
+model Dataset {
+  id           String   @id @default(uuid())
+  title        String
+  format       String
+  source       String?
+  year         Int
+  description  String?
+  fileUrl      String?
+  expeditionId String
+  region       String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  expedition Expedition @relation(fields: [expeditionId], references: [id], onDelete: Cascade)
+  tags       DatasetTag[]
+}
+
+// ---- Media ----
+
+model Media {
+  id          String    @id @default(uuid())
+  title       String
+  type        String
+  fileUrl     String
+  thumbnailUrl String?
+  caption     String?
+  expeditionId String?
+  locationId  String?
+  category    String?
+  createdAt   DateTime  @default(now())
+
+  expedition Expedition? @relation(fields: [expeditionId], references: [id], onDelete: SetNull)
+  location   Location?   @relation(fields: [locationId], references: [id], onDelete: SetNull)
+  tags       MediaTag[]
+}
+
+// ---- Tag ----
+
+model Tag {
+  id    String @id @default(uuid())
+  name  String @unique
+  color String?
+
+  reports      ReportTag[]
+  publications PublicationTag[]
+  datasets     DatasetTag[]
+  media        MediaTag[]
+  activities   ActivityTag[]
+  education    EducationTag[]
+}
+
+// ---- Tag Join Tables ----
+
+model ReportTag {
+  id       String @id @default(uuid())
+  reportId String
+  tagId    String
+
+  report Report @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([reportId, tagId])
+}
+
+model PublicationTag {
+  id            String @id @default(uuid())
+  publicationId String
+  tagId         String
+
+  publication Publication @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+  tag         Tag         @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([publicationId, tagId])
+}
+
+model DatasetTag {
+  id        String @id @default(uuid())
+  datasetId String
+  tagId     String
+
+  dataset Dataset @relation(fields: [datasetId], references: [id], onDelete: Cascade)
+  tag     Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([datasetId, tagId])
+}
+
+model MediaTag {
+  id      String @id @default(uuid())
+  mediaId String
+  tagId   String
+
+  media Media @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+  tag   Tag   @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([mediaId, tagId])
+}
+
+// ---- Institutional Activity ----
+
+model InstitutionalActivity {
+  id           String   @id @default(uuid())
+  title        String
+  date         DateTime
+  description  String
+  type         String
+  expeditionId String?
+  mediaId      String?
+  createdAt    DateTime @default(now())
+
+  expedition Expedition? @relation(fields: [expeditionId], references: [id], onDelete: SetNull)
+  tags       ActivityTag[]
+}
+
+model ActivityTag {
+  id         String @id @default(uuid())
+  activityId String
+  tagId      String
+
+  activity InstitutionalActivity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  tag      Tag                   @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([activityId, tagId])
+}
+
+// ---- Educational Resource ----
+
+model EducationalResource {
+  id           String   @id @default(uuid())
+  title        String
+  content      String
+  difficulty   String   @default("BEGINNER")
+  category     String
+  expeditionId String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  expedition Expedition?     @relation(fields: [expeditionId], references: [id], onDelete: SetNull)
+  tags       EducationTag[]
+}
+
+model EducationTag {
+  id           String @id @default(uuid())
+  educationId  String
+  tagId        String
+
+  education EducationalResource @relation(fields: [educationId], references: [id], onDelete: Cascade)
+  tag       Tag                 @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([educationId, tagId])
+}
+
+// ---- Outreach Content ----
+
+model OutreachContent {
+  id           String   @id @default(uuid())
+  title        String
+  type         String
+  content      String
+  resourceId   String
+  resourceType String
+  status       String   @default("DRAFT")
+  createdBy    String
+  approvedBy   String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  creator User @relation("OutreachCreator", fields: [createdBy], references: [id], onDelete: Cascade)
+}
