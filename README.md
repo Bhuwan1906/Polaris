@@ -13,19 +13,29 @@
 
 India has been conducting polar research since 1981 — over 44 Antarctic expeditions, a permanent Arctic research station (Himadri), hundreds of scientific publications, thousands of photographs, and countless datasets. But this knowledge is **scattered** across different websites, PDFs, databases, and institutional archives.
 
-A student wanting to learn about India's 44th Antarctic Expedition would need to:
-- Check one website for the expedition report
-- Search another for photographs
-- Browse a third for publications
-- Look elsewhere for datasets
+### Who faces this problem?
 
-**There is no single place where everything is connected.**
+| User | What They Struggle With |
+|------|------------------------|
+| **Students** | Want to learn about polar science but don't know where to start. Information is buried in technical documents they can't understand. |
+| **Researchers** | Waste hours searching multiple sources to find related reports, publications, and datasets for a single expedition. |
+| **Educators** | Need verified, simplified content to teach students — but have no centralized source to pull from. |
+| **NCPOR Staff** | Want to share polar research on social media and websites but must manually compile information from scattered systems. |
+| **General Public** | Barely know India has polar research stations. The knowledge exists but is invisible to them. |
+
+### The specific gaps:
+
+1. **No unified search** — Finding information requires checking 4-5 different systems
+2. **No connections** — A report doesn't link to its expedition, publication doesn't link to its dataset
+3. **No outreach pipeline** — Creating social media content requires manual research and fact-checking
+4. **No student-friendly view** — Technical documents overwhelm non-expert audiences
+5. **No discoverability** — Historical expeditions and their achievements are hidden in archives
 
 ---
 
 ## 💡 The Solution — POLARIS
 
-**POLARIS** (Polar Research & Information System) is a unified digital platform that brings all of India's polar research into **one interconnected knowledge ecosystem**.
+**POLARIS** (Polar Research & Information System) solves all five gaps with one platform.
 
 ### The Core Innovation: Connected Knowledge
 
@@ -50,6 +60,16 @@ When a user opens the 44th Antarctic Expedition, they immediately see:
 - The map location of Bharati and Maitri stations
 
 **Everything is linked. Nothing is isolated.**
+
+### How Each Problem Is Solved
+
+| Problem | Solution in POLARIS |
+|---------|-------------------|
+| Scattered information | Unified search across ALL resource types in one platform |
+| No connections between resources | Connected Knowledge model — every resource links to its expedition, location, and research area |
+| No outreach pipeline | Outreach Studio — select an expedition, pick a template, generate verified social media content instantly |
+| No student-friendly view | Education Hub with simplified explanations, facts, and visual storytelling |
+| No discoverability | Interactive map, timeline exploration, and curated featured content |
 
 ---
 
@@ -79,15 +99,6 @@ When a user opens the 44th Antarctic Expedition, they immediately see:
 └─────────────────────────────────────────┘
 ```
 
-### User Roles
-
-| Role | What They Can Do |
-|------|-----------------|
-| **Public / Student** | Browse, search, explore expeditions, watch videos, learn about polar science |
-| **Researcher** | Find publications, datasets, reports with advanced filters |
-| **Educator** | Discover educational resources and verified content |
-| **Admin** | Upload resources, manage content, generate outreach material |
-
 ### The Demo Flow (What Judges Will See)
 
 1. **Homepage** → See live statistics (11 expeditions, 8 publications, 8 datasets...)
@@ -97,7 +108,7 @@ When a user opens the 44th Antarctic Expedition, they immediately see:
 5. **Gallery** → Browse photos and watch YouTube polar research videos
 6. **Education** → Simplified polar science for students
 7. **Outreach Studio** → Select expedition → Generate verified social media post
-8. **Credits** → Team info with photos
+8. **Credits** → Team info
 
 ---
 
@@ -160,50 +171,8 @@ polaris/
 │   └── src/middleware/  → Auth, validation, error handling
 ├── shared/              → TypeScript types, Zod schemas, constants
 ├── railway.json         → Backend deployment config
-├── vercel.json          → Frontend deployment config
-└── .freebuff/           → Project docs and run scripts
+└── vercel.json          → Frontend deployment config
 ```
-
----
-
-## 🏃 Quick Start (Local Development)
-
-### Prerequisites
-- Node.js 18+
-
-### Setup
-
-```bash
-# 1. Clone the repo
-git clone https://github.com/Bhuwan1906/Polaris.git
-cd Polaris
-
-# 2. Install dependencies
-cd server && npm install
-cd ../client && npm install
-
-# 3. Set up database
-cd server
-npx prisma generate
-npx prisma db push
-npx tsx prisma/seed.ts
-
-# 4. Start the app
-cd server && node launch.js
-# In another terminal:
-cd client && node launch.cjs
-```
-
-**Frontend:** http://localhost:5173
-**Backend API:** http://localhost:3001
-
-### Demo Accounts
-
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | admin@polaris.gov.in | admin123 |
-| Researcher | researcher@polaris.gov.in | user123 |
-| Public | user@polaris.gov.in | user123 |
 
 ---
 
