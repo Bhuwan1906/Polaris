@@ -1,9 +1,9 @@
 import axios from 'axios';
 
+const API_BASE = import.meta.env.VITE_API_URL || 'https://polaris-production-a067.up.railway.app';
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL 
-    ? `${import.meta.env.VITE_API_URL}/api/v1` 
-    : '/api/v1',
+  baseURL: API_BASE + '/api/v1',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -31,7 +31,7 @@ api.interceptors.response.use(
       if (refreshToken) {
         try {
           const response = await axios.post(
-            `${import.meta.env.VITE_API_URL || ''}/api/v1/auth/refresh`,
+            `${API_BASE}/api/v1/auth/refresh`,
             { refreshToken }
           );
 
