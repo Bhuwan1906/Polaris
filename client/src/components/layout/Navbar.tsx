@@ -155,8 +155,9 @@ export default function Navbar() {
           </div>
         </div>
       </div>
+    </div>
 
-            {/* Mobile menu - Slide-in panel */}
+      {/* Mobile menu - Slide-in panel */}
       {mobileOpen && (
         <>
           <div className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden" onClick={() => setMobileOpen(false)} />
