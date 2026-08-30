@@ -1,17 +1,17 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Search, Menu, X, ChevronDown, User, LogOut, Shield, BookOpen } from 'lucide-react';
+import { Search, Menu, X, ChevronDown, User, LogOut, Shield, BookOpen, Compass, FileText, Database, Map, Camera, GraduationCap } from 'lucide-react';
 import PolarLogo from '@/components/ui/PolarLogo';
 import { useAuth } from '@/context/AuthContext';
 import { cn } from '@/lib/utils';
 
 const navLinks = [
-  { label: 'Expeditions', href: '/expeditions' },
-  { label: 'Publications', href: '/publications' },
-  { label: 'Datasets', href: '/datasets' },
-  { label: 'Map', href: '/map' },
-  { label: 'Gallery', href: '/gallery' },
-  { label: 'Education', href: '/education' },
+  { label: 'Expeditions', href: '/expeditions', icon: Compass, color: 'text-cyan-400' },
+  { label: 'Publications', href: '/publications', icon: FileText, color: 'text-blue-400' },
+  { label: 'Datasets', href: '/datasets', icon: Database, color: 'text-emerald-400' },
+  { label: 'Map', href: '/map', icon: Map, color: 'text-orange-400' },
+  { label: 'Gallery', href: '/gallery', icon: Camera, color: 'text-rose-400' },
+  { label: 'Education', href: '/education', icon: GraduationCap, color: 'text-amber-400' },
 ];
 
 export default function Navbar() {
@@ -54,6 +54,17 @@ export default function Navbar() {
               </div>
             </form>
 
+            {/* Desktop nav links */}
+            <div className="hidden items-center gap-1 lg:flex">
+              {navLinks.map((link) => {
+                const isActive = location.pathname === link.href;
+                return (
+                  <Link key={link.href} to={link.href} className={cn("px-3 py-2 rounded-lg text-sm font-medium transition-colors", isActive ? "text-white bg-surface-800" : "text-surface-400 hover:text-white hover:bg-surface-800/50")}>
+                    {link.label}
+                  </Link>
+                );
+              })}
+            </div>
             {/* Auth */}
             {isAuthenticated ? (
               <div className="relative">
@@ -137,50 +148,59 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
-      {mobileOpen && (
-        <div className="border-t border-surface-800 bg-polar-950 lg:hidden">
-          <div className="container-wide space-y-1 py-4">
-            <form onSubmit={handleSearch} className="mb-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-surface-400" />
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="input pl-10"
-                />
-              </div>
-            </form>
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                to={link.href}
-                onClick={() => setMobileOpen(false)}
-                className={cn(
-                  'block rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
-                  location.pathname === link.href
-                    ? 'bg-surface-800 text-white'
-                    : 'text-surface-400 hover:bg-surface-800/50 hover:text-white'
-                )}
-              >
-                {link.label}
-              </Link>
-            ))}
-            {!isAuthenticated && (
-              <div className="flex gap-2 pt-2">
-                <Link to="/login" onClick={() => setMobileOpen(false)} className="btn-secondary flex-1 text-center text-sm">
-                  Sign In
-                </Link>
-                <Link to="/register" onClick={() => setMobileOpen(false)} className="btn-primary flex-1 text-center text-sm">
-                  Register
-                </Link>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-    </nav>
+      {/* Mobile menu - Slide-in panel */}
+{mobileOpen && (
+<>
+<div className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden" onClick={() => setMobileOpen(false)} />
+<div className="fixed inset-y-0 right-0 z-50 w-80 max-w-[85vw] bg-surface-900 border-l border-surface-700 shadow-2xl lg:hidden overflow-y-auto">
+<div className="flex items-center justify-between p-4 border-b border-surface-800">
+<PolarLogo size="sm" showText />
+<button onClick={() => setMobileOpen(false)} className="rounded-full p-2 bg-surface-800 text-surface-400 hover:text-white hover:bg-surface-700 transition-colors"><X className="h-5 w-5" /></button>
+</div>
+<div className="p-4">
+<form onSubmit={handleSearch}>
+<div className="relative">
+<Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-surface-500" />
+<input type="text" placeholder="Search polar research..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full pl-10 pr-4 py-3 rounded-xl bg-surface-800 border border-surface-700 text-white placeholder:text-surface-500 text-sm focus:outline-none focus:border-polar-500/50 transition-all" />
+</div>
+</form>
+</div>
+<div className="px-3">
+<p className="px-3 mb-2 text-xs font-semibold text-surface-500 uppercase tracking-wider">Explore</p>
+{navLinks.map((link) => {
+const Icon = link.icon;
+const isActive = location.pathname === link.href;
+return (
+<Link key={link.href} to={link.href} onClick={() => setMobileOpen(false)} className={cn("flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition-all duration-200", isActive ? "bg-polar-500/15 text-white border border-polar-500/20" : "text-surface-400 hover:bg-surface-800 hover:text-white")}>
+<div className={cn("flex h-9 w-9 items-center justify-center rounded-lg transition-colors", isActive ? "bg-polar-500/20" : "bg-surface-800")}>
+<Icon className={cn("h-4 w-4", isActive ? "text-polar-400" : link.color)} />
+</div>
+<span>{link.label}</span>
+{isActive && <div className="ml-auto h-1.5 w-1.5 rounded-full bg-polar-400" />}
+</Link>
+);
+})}
+</div>
+<div className="p-4 mt-4 border-t border-surface-800">
+{isAuthenticated ? (
+<div>
+<div className="flex items-center gap-3 px-3 py-3 rounded-xl bg-surface-800/50">
+<div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-polar-500 to-aurora-500"><User className="h-5 w-5 text-white" /></div>
+<div><p className="text-sm font-medium text-white">{user?.name}</p><p className="text-xs text-surface-400">{user?.role}</p></div>
+</div>
+{isAdmin && (<div className="mt-3 space-y-1"><Link to="/admin" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-surface-300 hover:bg-surface-800 hover:text-white transition-colors"><Shield className="h-4 w-4 text-polar-400" /> Admin Dashboard</Link><Link to="/outreach" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-surface-300 hover:bg-surface-800 hover:text-white transition-colors"><BookOpen className="h-4 w-4 text-aurora-400" /> Outreach Studio</Link></div>)}
+<button onClick={() => { logout(); setMobileOpen(false); navigate("/"); }} className="mt-3 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-red-400 hover:bg-red-500/10 transition-colors"><LogOut className="h-4 w-4" /> Sign Out</button>
+</div>
+) : (
+<div className="space-y-2">
+<Link to="/login" onClick={() => setMobileOpen(false)} className="flex items-center justify-center w-full rounded-xl py-3 text-sm font-medium text-white bg-surface-800 border border-surface-700 hover:bg-surface-700 transition-colors">Sign In</Link>
+<Link to="/register" onClick={() => setMobileOpen(false)} className="flex items-center justify-center w-full rounded-xl py-3 text-sm font-medium text-white bg-gradient-to-r from-polar-500 to-aurora-500 hover:from-polar-600 hover:to-aurora-600 transition-all shadow-lg shadow-polar-500/25">Get Started Free</Link>
+</div>
+)}
+</div>
+<div className="p-4 border-t border-surface-800"><p className="text-xs text-surface-600 text-center">SIH 2022 • PS ID: SIH26063</p></div>
+</div>
+</>
+)}</nav>
   );
 }
