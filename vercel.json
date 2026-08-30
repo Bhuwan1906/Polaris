@@ -1,8 +1,4 @@
 {
-  "buildCommand": "cd client && npm install && npx vite build",
-  "outputDirectory": "client/dist",
-  "installCommand": "cd client && npm install",
-  "framework": "vite",
   "rewrites": [
     {
       "source": "/((?!api|_next|assets|favicon.ico).*)",

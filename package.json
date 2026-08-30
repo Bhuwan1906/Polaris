@@ -9,7 +9,8 @@
     "dev:server": "npm run dev --prefix server",
     "db:generate": "prisma generate --schema=server/prisma/schema.prisma",
     "db:push": "prisma db push --schema=server/prisma/schema.prisma",
-    "db:seed": "node server/prisma/seed.js"
+    "db:seed": "node server/prisma/seed.js",
+    "build": "cd client && npm install && npx vite build"
   },
   "dependencies": {
     "concurrently": "^8.2.2"
