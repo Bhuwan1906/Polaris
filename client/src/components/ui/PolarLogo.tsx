@@ -75,13 +75,13 @@ export default function PolarLogo({ size = 'md', showText = true, showSubtitle =
       </div>
       
       {showText && (
-        <div className="hidden sm:block">
+        <div className="hidden sm:block whitespace-nowrap">
           <div className="flex items-baseline gap-1.5">
             <span className="text-lg font-bold tracking-tight text-white">POLARIS</span>
             <span className="text-[10px] font-medium text-aurora-400 tracking-widest uppercase">SIH 2026</span>
           </div>
           {showSubtitle && (
-            <span className="text-[11px] text-surface-400 leading-none">Polar Research & Information System</span>
+            <span className="hidden lg:inline text-[11px] text-surface-400 leading-none whitespace-nowrap">Polar Research & Information System</span>
           )}
         </div>
       )}

@@ -3,9 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import {
   Search, Compass, BookOpen, Database, Camera, MapPin,
   ArrowRight, ChevronRight, Globe, Snowflake, Calendar,
-  Users, Award, FileText
+  Users, Award, FileText, Film, Play, Image as ImageIcon
 } from 'lucide-react';
-import { useStats, useFeaturedExpeditions, useLatestPublications } from '@/hooks/useApi';
+import { useStats, useFeaturedExpeditions, useLatestPublications, useMedia } from '@/hooks/useApi';
 import { formatDate, getRegionBadgeClass, truncate } from '@/lib/utils';
 import { REGION_LABELS } from '@/lib/utils';
 
@@ -15,6 +15,7 @@ export default function HomePage() {
   const { data: stats } = useStats();
   const { data: expeditions } = useFeaturedExpeditions();
   const { data: publications } = useLatestPublications();
+  const { data: mediaData } = useMedia({ page: 1, limit: 6 });
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -241,6 +242,60 @@ export default function HomePage() {
         </div>
       </section>
 
+
+      {/* ===== MEDIA GALLERY ===== */}
+      <section className="bg-surface-900/30 py-20">
+        <div className="container-wide">
+          <div className="flex items-end justify-between">
+            <div>
+              <h2 className="section-heading">Media Gallery</h2>
+              <p className="section-subheading">
+                Photographs and videos from India's polar expeditions
+              </p>
+            </div>
+            <Link
+              to="/gallery"
+              className="hidden items-center gap-1 text-sm font-medium text-polar-400 hover:text-polar-300 sm:flex"
+            >
+              View All <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+
+          <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+            {(mediaData?.data || []).slice(0, 6).map((item: any, idx: number) => (
+              <Link
+                key={item.id}
+                to="/gallery"
+                className="group relative aspect-square overflow-hidden rounded-xl border border-surface-700"
+              >
+                <img
+                  src={photoUrls[idx % photoUrls.length]}
+                  alt={item.title}
+                  className="h-full w-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"
+                  loading="lazy"
+                />
+                {item.type === 'VIDEO' && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm border border-white/30">
+                      <Play className="h-4 w-4 text-white ml-0.5" fill="white" />
+                    </div>
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute bottom-0 left-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <p className="text-xs text-white font-medium line-clamp-1">{item.title.replace('[DEMO] ', '')}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          <div className="mt-8 text-center sm:hidden">
+            <Link to="/gallery" className="btn-secondary">
+              View Full Gallery <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
       {/* ===== FEATURES SECTION ===== */}
       <section className="py-20">
         <div className="container-wide">
